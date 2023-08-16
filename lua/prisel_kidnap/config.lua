@@ -1,0 +1,1 @@
+Prisel.Kidnapping.Config = Prisel.Kidnapping.Config or {}
