@@ -1,1 +1,3 @@
--- cl_network.lua
+net.Receive("Prisel_KidnapSystem:KidnapPlayer", function()
+    print("Receive Kidnap")
+end)

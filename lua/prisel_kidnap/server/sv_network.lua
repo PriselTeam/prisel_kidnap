@@ -1,1 +1,1 @@
--- sv_network.lua
+util.AddNetworkString("Prisel_KidnapSystem:KidnapPlayer")

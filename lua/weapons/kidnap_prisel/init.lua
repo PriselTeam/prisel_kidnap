@@ -51,16 +51,10 @@ function SWEP:CapturePlayer(pPlayer)
                 return
             end
             
-            pPlayer:SetRenderMode(RENDERMODE_NONE)
-            pPlayer:DrawWorldModel(false)
             self:SetPerson(pPlayer)
 
-            pPlayer:SetParent(self)
-            pPlayer:SetMoveType(MOVETYPE_NONE)
-            pPlayer:SetPos(self:GetPos())
-            pPlayer:SetAngles(self:GetAngles())
-            pPlayer:SetNotSolid(true)
-            pPlayer:SetNWBool("Prisel_Kidnapped", true)
+            pPlayer:GetCaptured(self)
+
             self.Owner:SetNWEntity("Prisel_HasKidnapped", pPlayer)
 
             self.Owner:SetWalkSpeed(80)
@@ -129,16 +123,7 @@ function SWEP:SecondaryAttack()
         return
     end
 
-    pPerson:SetRenderMode(RENDERMODE_NORMAL)
-    pPerson:DrawWorldModel(true)
-
-    pPerson:SetParent(nil)
-    pPerson:SetMoveType(MOVETYPE_WALK)
-    pPerson:SetPos(self.Owner:GetPos() + self.Owner:GetForward() * 50)    
-    pPerson:Unstuck()
-    pPerson:SetAngles(self:GetAngles())
-    pPerson:SetNotSolid(false)
-    pPerson:SetNWBool("Prisel_Kidnapped", false)
+    pPerson:Release(self)
 
     self.Owner:SetWalkSpeed(120)
     self.Owner:SetRunSpeed(180)
