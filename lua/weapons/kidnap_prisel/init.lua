@@ -8,12 +8,20 @@ function SWEP:Deploy()
 end
 
 function SWEP:SetupDataTables()
-    self:NetworkVar("Bool", 0, "HasPerson")
+    self:NetworkVar("Bool", 0, "IsCapturing")
     self:NetworkVar("Entity", 0, "Person")
+
+    self:SetIsCapturing(false)
 end
 
 function SWEP:CapturePlayer(pPlayer)
-    print("Capturing player " .. pPlayer:Nick())
+
+    self:SetIsCapturing(true)
+
+    timer.Simple(0.5, function()
+        self:SetIsCapturing(false)
+    end)
+
 end
 
 function SWEP:PrimaryAttack()
@@ -21,14 +29,13 @@ function SWEP:PrimaryAttack()
     self.Owner:SetAnimation(PLAYER_ATTACK1)
     self:SendWeaponAnim(ACT_VM_MISSCENTER)
 
-    if self:GetHasPerson() and IsValid(self:GetPerson()) then
+    if IsValid(self:GetPerson()) then
         DarkRP.notify(self.Owner, 1, 4, "Vous avez déjà une personne dans votre filet.")
         return
     end
 
     if not IsValid(self:GetPerson()) then
         self:SetPerson(nil)
-        self:SetHasPerson(false)
     end
 
     local tTrace = self.Owner:GetEyeTrace()
