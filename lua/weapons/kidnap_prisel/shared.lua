@@ -21,7 +21,14 @@ SWEP.Secondary.DefaultClip		    = -1
 SWEP.Secondary.Automatic			= false
 SWEP.Secondary.Ammo					= 'none'
 SWEP.ViewModelFOV = 100
+SWEP.NextAttack = 0
 
 function SWEP:SetupDataTables()
     self:NetworkVar("Entity", 0, "Person")
+    self:NetworkVar("Bool", 0, "IsKidnapping")
+    self:NetworkVar("Float", 0, "ProgressKidnap")
+
+    if SERVER then
+        self:SetProgressKidnap(0)
+    end
 end
