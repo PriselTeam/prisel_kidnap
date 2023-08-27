@@ -7,4 +7,8 @@ end
 
 function SWEP:DrawHUD()
     surface.DrawCircle(DarkRP.ScrW / 2, DarkRP.ScrH / 2, 10, DarkRP.Config.Colors["Blue"])
+
+    -- if self:GetIsCapturing() then
+        -- draw.SimpleText("Capturing...", "DermaDefault", DarkRP.ScrW / 2, DarkRP.ScrH / 2 + 20, DarkRP.Config.Colors["Blue"], TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    -- end
 end
