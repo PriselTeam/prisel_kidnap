@@ -21,3 +21,7 @@ SWEP.Secondary.DefaultClip		    = -1
 SWEP.Secondary.Automatic			= false
 SWEP.Secondary.Ammo					= 'none'
 SWEP.ViewModelFOV = 100
+
+function SWEP:SetupDataTables()
+    self:NetworkVar("Entity", 0, "Person")
+end
