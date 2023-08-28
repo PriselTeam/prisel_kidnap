@@ -9,6 +9,9 @@ function PLAYER:GetCaptured(eParent)
     self:Freeze(true)
     self:SetNWBool("Prisel_Kidnapped", true)
 
+    net.Start("Prisel_KidnapSystem:KidnapPlayer")
+    net.Send(self)
+
     if not IsValid(eParent) then return end
 
     self:SetParent(eParent)
@@ -27,6 +30,14 @@ function PLAYER:Release(eParent)
     self:SetCollisionGroup(COLLISION_GROUP_PLAYER)
     self:Freeze(false)
     self:SetNWBool("Prisel_Kidnapped", false)
+
+    timer.Simple(10, function()
+        if IsValid(self) then
+            net.Start("Prisel_KidnapSystem:UnKidnapPlayer")
+            net.Send(self)
+        end
+    end)
+
 
     if not IsValid(eParent) then return end
     

@@ -2,15 +2,19 @@ function Prisel.Kidnapping:ShowKidnappedPanel()
 
     local beginTime = CurTime()
 
-    local vFrame = vgui.Create("DFrame")
-    vFrame:SetSize(DarkRP.ScrW, DarkRP.ScrH)
-    vFrame:SetTitle("")
-    -- vFrame:ShowCloseButton(false)
-    vFrame:SetDraggable(false)
-    vFrame:Center()
-    vFrame:MakePopup()
+    if IsValid(Prisel.Kidnapping.KidnapedFrame) then
+        Prisel.Kidnapping.KidnapedFrame:Remove()
+    end
 
-    function vFrame:Paint(w, h)
+    Prisel.Kidnapping.KidnapedFrame = vgui.Create("DFrame")
+    Prisel.Kidnapping.KidnapedFrame:SetSize(DarkRP.ScrW, DarkRP.ScrH)
+    Prisel.Kidnapping.KidnapedFrame:SetTitle("")
+    Prisel.Kidnapping.KidnapedFrame:ShowCloseButton(false)
+    Prisel.Kidnapping.KidnapedFrame:SetDraggable(false)
+    Prisel.Kidnapping.KidnapedFrame:Center()
+    Prisel.Kidnapping.KidnapedFrame:MakePopup()
+
+    function Prisel.Kidnapping.KidnapedFrame:Paint(w, h)
         draw.RoundedBox(0, 0, 0, w, h, color_black)
 
         surface.SetDrawColor(color_white)
@@ -26,13 +30,13 @@ function Prisel.Kidnapping:ShowKidnappedPanel()
 
     timer.Simple(180, function()
 
-        if not IsValid(vFrame) then
+        if not IsValid(Prisel.Kidnapping.KidnapedFrame) then
             return
         end
 
-        local vButtonStaff = vgui.Create("Prisel.Button", vFrame)
-        vButtonStaff:SetSize(vFrame:GetWide()*0.2, vFrame:GetTall()*0.05)
-        vButtonStaff:SetPos(vFrame:GetWide()*0.4, vFrame:GetTall()*0.9)
+        local vButtonStaff = vgui.Create("Prisel.Button", Prisel.Kidnapping.KidnapedFrame)
+        vButtonStaff:SetSize(Prisel.Kidnapping.KidnapedFrame:GetWide()*0.2, Prisel.Kidnapping.KidnapedFrame:GetTall()*0.05)
+        vButtonStaff:SetPos(Prisel.Kidnapping.KidnapedFrame:GetWide()*0.4, Prisel.Kidnapping.KidnapedFrame:GetTall()*0.9)
         vButtonStaff:SetText("Appeler un membre du staff")
         vButtonStaff:SetBackgroundColor(DarkRP.Config.Colors["Red"])
 
@@ -49,6 +53,13 @@ function Prisel.Kidnapping:ShowKidnappedPanel()
         end
 
     end)
+
+end
+
+function Prisel.Kidnapping:CloseKidnappedPanel()
+    if IsValid(Prisel.Kidnapping.KidnapedFrame) then
+        Prisel.Kidnapping.KidnapedFrame:Remove()
+    end
 end
 
 local PLAYER = FindMetaTable("Player")
@@ -56,5 +67,3 @@ local PLAYER = FindMetaTable("Player")
 function PLAYER:IsKidnapped()
     return self:GetNWBool("Prisel_Kidnapped", false)
 end
-
-Prisel.Kidnapping:ShowKidnappedPanel()
