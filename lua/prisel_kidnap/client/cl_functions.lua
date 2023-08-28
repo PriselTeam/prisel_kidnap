@@ -1,4 +1,7 @@
 function Prisel.Kidnapping:ShowKidnappedPanel()
+
+    local beginTime = CurTime()
+
     local vFrame = vgui.Create("DFrame")
     vFrame:SetSize(DarkRP.ScrW, DarkRP.ScrH)
     vFrame:SetTitle("")
@@ -16,14 +19,34 @@ function Prisel.Kidnapping:ShowKidnappedPanel()
 
         draw.SimpleText("Vous avez été kidnappé !", DarkRP.Library.Font(12), w / 2, h / 2 + 50, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("Vous ne pouvez plus rien faire, vous devrez attendre d'être relaché.", DarkRP.Library.Font(12), w / 2, h / 2 + 85, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        
+        draw.SimpleText("Kidnappé depuis " .. DarkRP.Library.FormatSeconds(CurTime() - beginTime), DarkRP.Library.Font(12), w / 2, h / 2 + 120, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    
     end
 
-    timer.Simple(5, function()
+    timer.Simple(180, function()
+
+        if not IsValid(vFrame) then
+            return
+        end
+
         local vButtonStaff = vgui.Create("Prisel.Button", vFrame)
         vButtonStaff:SetSize(vFrame:GetWide()*0.2, vFrame:GetTall()*0.05)
         vButtonStaff:SetPos(vFrame:GetWide()*0.4, vFrame:GetTall()*0.9)
         vButtonStaff:SetText("Appeler un membre du staff")
-        vButtonStaff:SetBackgroundColor(Color(255, 0, 0))
+        vButtonStaff:SetBackgroundColor(DarkRP.Config.Colors["Red"])
+
+        local hasRequested = false
+
+        function vButtonStaff:DoClick()
+            if hasRequested then
+                return
+            end
+            LocalPlayer():ConCommand("say \"/// [MESSAGE ENVOYÉ DEPUIS LE MENU] Je suis kidnappé depuis plus de 3 minutes.\"")
+            vButtonStaff:SetText("Message envoyé !")
+            vButtonStaff:SetBackgroundColor(DarkRP.Config.Colors["Green"])
+            hasRequested = true
+        end
 
     end)
 end
