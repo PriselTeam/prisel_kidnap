@@ -14,7 +14,7 @@ function SWEP:PrimaryAttack()
         return
     end
 
-    self.Owner:SetAnimation(PLAYER_ATTACK1)
+    self:GetOwner():SetAnimation(PLAYER_ATTACK1)
     self:SendWeaponAnim(ACT_VM_MISSCENTER)
 
     iProgress = 0
@@ -26,7 +26,7 @@ function SWEP:DrawHUD()
 
     if self:GetIsKidnapping() then
 
-        iProgress = Lerp(FrameTime()*7, iProgress, self:GetProgressKidnap())
+        iProgress = Lerp(0.05, iProgress, self:GetProgressKidnap())
         draw.RoundedBox(0, DarkRP.ScrW / 2 - DarkRP.ScrW*0.05, DarkRP.ScrH / 2 + 50, DarkRP.ScrW*0.1, 20, DarkRP.Config.Colors["Main"])
         draw.RoundedBox(0, DarkRP.ScrW / 2 - DarkRP.ScrW*0.05, DarkRP.ScrH / 2 + 50, DarkRP.ScrW*0.1 * iProgress/100, 20, DarkRP.Config.Colors["Blue"])
     
@@ -45,7 +45,7 @@ function SWEP:SecondaryAttack()
         return
     end
 
-    self.Owner:SetAnimation(PLAYER_ATTACK1)
+    self:GetOwner():SetAnimation(PLAYER_ATTACK1)
     self:SendWeaponAnim(ACT_VM_MISSCENTER)
 
 end

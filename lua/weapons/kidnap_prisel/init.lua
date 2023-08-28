@@ -6,6 +6,17 @@ function SWEP:Deploy()
     self:SetHoldType('melee2')
 end
 
+function SWEP:Reset()
+    self:GetPerson():Release()
+    self:SetProgressKidnap(0)
+    self:SetIsKidnapping(false)
+    self:SetPerson(nil)
+
+    self:GetOwner():SetNWEntity("Prisel_HasKidnapped", nil)
+    self:GetOwner():SetWalkSpeed(120)
+    self:GetOwner():SetRunSpeed(180)
+end
+
 function SWEP:CapturePlayer(pPlayer)
     
     if not IsValid(pPlayer) then
@@ -13,7 +24,7 @@ function SWEP:CapturePlayer(pPlayer)
     end
 
     if pPlayer:GetNoDraw() then
-        DarkRP.notify(self.Owner, 1, 4, "Vous ne pouvez pas capturer cette personne.")
+        DarkRP.notify(self:GetOwner(), 1, 4, "Vous ne pouvez pas capturer cette personne.")
         return
     end
 
@@ -33,17 +44,17 @@ function SWEP:CapturePlayer(pPlayer)
                 return
             end
 
-            local tTrace = self.Owner:GetEyeTrace()
+            local tTrace = self:GetOwner():GetEyeTrace()
             local pEnt = tTrace.Entity
 
             if not IsValid(pEnt) then
                 return
             end
 
-            local iDist = self.Owner:GetPos():Distance(pEnt:GetPos())
+            local iDist = self:GetOwner():GetPos():Distance(pEnt:GetPos())
 
             if iDist > Prisel.Kidnapping.Config.MaxDistance then
-                DarkRP.notify(self.Owner, 1, 4, "Vous êtes trop loin de la personne.")
+                DarkRP.notify(self:GetOwner(), 1, 4, "Vous êtes trop loin de la personne.")
                 return
             end
 
@@ -55,10 +66,10 @@ function SWEP:CapturePlayer(pPlayer)
 
             pPlayer:GetCaptured(self)
 
-            self.Owner:SetNWEntity("Prisel_HasKidnapped", pPlayer)
+            self:GetOwner():SetNWEntity("Prisel_HasKidnapped", pPlayer)
 
-            self.Owner:SetWalkSpeed(80)
-            self.Owner:SetRunSpeed(80)
+            self:GetOwner():SetWalkSpeed(80)
+            self:GetOwner():SetRunSpeed(80)
         end
     end)
 
@@ -78,28 +89,28 @@ function SWEP:PrimaryAttack()
 
 
     if IsValid(self:GetPerson()) then
-        DarkRP.notify(self.Owner, 1, 4, "Vous avez déjà une personne dans votre filet.")
+        DarkRP.notify(self:GetOwner(), 1, 4, "Vous avez déjà une personne dans votre filet.")
         return
     end
 
-    self.Owner:SetAnimation(PLAYER_ATTACK1)
+    self:GetOwner():SetAnimation(PLAYER_ATTACK1)
     self:SendWeaponAnim(ACT_VM_MISSCENTER)
 
     if not IsValid(self:GetPerson()) then
         self:SetPerson(nil)
     end
 
-    local tTrace = self.Owner:GetEyeTrace()
+    local tTrace = self:GetOwner():GetEyeTrace()
     local pEnt = tTrace.Entity
 
     if not IsValid(pEnt) then
         return
     end
 
-    local iDist = self.Owner:GetPos():Distance(pEnt:GetPos())
+    local iDist = self:GetOwner():GetPos():Distance(pEnt:GetPos())
 
     if iDist > Prisel.Kidnapping.Config.MaxDistance then
-        DarkRP.notify(self.Owner, 1, 4, "Vous êtes trop loin de la personne.")
+        DarkRP.notify(self:GetOwner(), 1, 4, "Vous êtes trop loin de la personne.")
         return
     end
 
@@ -110,11 +121,11 @@ end
 function SWEP:SecondaryAttack()
 
     if not IsValid(self:GetPerson()) then
-        DarkRP.notify(self.Owner, 1, 4, "Vous n'avez personne dans votre filet.")
+        DarkRP.notify(self:GetOwner(), 1, 4, "Vous n'avez personne dans votre filet.")
         return
     end
 
-    self.Owner:SetAnimation(PLAYER_ATTACK1)
+    self:GetOwner():SetAnimation(PLAYER_ATTACK1)
     self:SendWeaponAnim(ACT_VM_MISSCENTER)
 
     local pPerson = self:GetPerson()
@@ -125,8 +136,8 @@ function SWEP:SecondaryAttack()
 
     pPerson:Release(self)
 
-    self.Owner:SetWalkSpeed(120)
-    self.Owner:SetRunSpeed(180)
+    self:GetOwner():SetWalkSpeed(120)
+    self:GetOwner():SetRunSpeed(180)
 
 
     self:SetPerson(nil)
