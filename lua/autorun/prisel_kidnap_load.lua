@@ -20,7 +20,6 @@ if SERVER then
 else
 
     Include("client/cl_functions.lua")
-    Include("client/cl_hooks.lua")
     Include("client/cl_network.lua")
 
 end

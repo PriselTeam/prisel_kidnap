@@ -2,6 +2,8 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 
+Prisel.Kidnapping.PlayersCached = {}
+
 function SWEP:Deploy()
     self:SetHoldType('melee2')
 end
@@ -15,11 +17,16 @@ function SWEP:Reset()
     self:GetOwner():SetNWEntity("Prisel_HasKidnapped", nil)
     self:GetOwner():SetWalkSpeed(120)
     self:GetOwner():SetRunSpeed(180)
+
 end
 
 function SWEP:CapturePlayer(pPlayer)
     
     if not IsValid(pPlayer) then
+        return
+    end
+
+    if not pPlayer:IsPlayer() then
         return
     end
 
@@ -104,6 +111,15 @@ function SWEP:PrimaryAttack()
     local pEnt = tTrace.Entity
 
     if not IsValid(pEnt) then
+        return
+    end
+
+    if not pEnt:IsPlayer() then
+        return
+    end
+
+    if IsValid(Prisel.Kidnapping.PlayersCached[sId64]) then
+        DarkRP.notify(self:GetOwner(), 1, 4, "Veuillez attendre avant de rekidnapper cette personne.")
         return
     end
 

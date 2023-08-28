@@ -34,7 +34,7 @@ function ENT:Use(pCaller)
 				if target:GetPos():Distance(self:GetPos()) < 1000 then
 
 					DarkRP.notify(pCaller, 1, 4, "Vous avez vendu "..target:Nick().." !")
-					target:Release()
+					target:Release(nil, true)
 					eWeapon:Reset()
 					local iMoney = math.random(Prisel.Kidnapping.Config.Reward.min, Prisel.Kidnapping.Config.Reward.max)
 					pCaller:addMoney(iMoney)

@@ -12,6 +12,8 @@ function PLAYER:GetCaptured(eParent)
     net.Start("Prisel_KidnapSystem:KidnapPlayer")
     net.Send(self)
 
+    Prisel.Kidnapping.PlayersCached[self:SteamID64()] = self
+
     if not IsValid(eParent) then return end
 
     self:SetParent(eParent)
@@ -21,7 +23,7 @@ function PLAYER:GetCaptured(eParent)
 
 end
 
-function PLAYER:Release(eParent)
+function PLAYER:Release(eParent, bDelay)
     self:SetRenderMode(RENDERMODE_NORMAL)
     self:DrawWorldModel(true)
     self:SetParent(nil)
@@ -31,12 +33,27 @@ function PLAYER:Release(eParent)
     self:Freeze(false)
     self:SetNWBool("Prisel_Kidnapped", false)
 
-    timer.Simple(10, function()
-        if IsValid(self) then
-            net.Start("Prisel_KidnapSystem:UnKidnapPlayer")
-            net.Send(self)
-        end
+    local sId64 = self:SteamID64()
+
+    timer.Simple(600, function()
+        Prisel.Kidnapping.PlayersCached[sId64] = nil
     end)
+
+    if bDelay then
+
+        timer.Simple(5, function()
+            if IsValid(self) then
+                net.Start("Prisel_KidnapSystem:UnKidnapPlayer")
+                net.Send(self)
+
+                self:Respawn()
+            end
+        end)
+
+    else
+        net.Start("Prisel_KidnapSystem:UnKidnapPlayer")
+        net.Send(self)
+    end
 
 
     if not IsValid(eParent) then return end
