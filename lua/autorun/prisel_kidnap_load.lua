@@ -15,13 +15,11 @@ if SERVER then
     Include("server/sv_network.lua")
 
     AddLuaFile("client/cl_functions.lua")
-    AddLuaFile("client/cl_hooks.lua")
     AddLuaFile("client/cl_network.lua")
 
 else
 
     Include("client/cl_functions.lua")
-    Include("client/cl_hooks.lua")
     Include("client/cl_network.lua")
 
 end
